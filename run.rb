@@ -14,7 +14,7 @@ outside_thermometer = TempReader.new(Config::Temp::Devices::OUTSIDE)
 outside_temp = outside_thermometer.read
 inside_temp = inside_thermometer.read
 
-puts "inside: #{inside_temp}  |  outside: #{outside_temp}"
+puts "inside: #{inside_temp}\noutside: #{outside_temp}"
 
 if outside_temp < min_temp || outside_temp > max_temp
   puts 'Outside temperature is not within pleasant range.'
@@ -26,4 +26,6 @@ if (target_temp - outside_temp).abs > (target_temp - inside_temp).abs
   exit 0
 end
 
+# Outside temperature is infact more pleasant than inside.
+# Time to open the damn windows!
 Delivery::Scheduler.new(inside_temp, outside_temp).schedule
