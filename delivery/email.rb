@@ -9,10 +9,10 @@ module Delivery
     end
 
     def deliver(message)
+      puts 'Sending SMS message via email'
       Mail.deliver do
              to Config::Delivery::TO_ADDRESS
            from Config::Delivery::FROM_ADDRESS
-        subject Config::Delivery::SUBJECT
            body message
       end
     end
