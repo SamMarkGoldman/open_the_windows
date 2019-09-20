@@ -4,9 +4,12 @@ class TempReader
   end
 
   def read
-    # needs real impl
-    # return 70
+    `python #{File.expand_path(File.dirname(__FILE__))}/read_raw_temp.py #{@address}`.to_f
+  end
 
+  private
+
+  def mock_read
     if (@address === Config::Temp::Devices::INSIDE)
       return 65
     end

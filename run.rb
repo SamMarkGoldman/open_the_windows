@@ -4,6 +4,7 @@ require_relative 'config'
 require_relative 'delivery'
 require_relative 'temp_reader'
 
+
 target_temp = Config::Temp::TARGET
 min_temp = target_temp - (Config::Temp::RANGE / 2)
 max_temp = target_temp + (Config::Temp::RANGE / 2)
