@@ -1,7 +1,7 @@
-use @vtext.com to text notifications
-calendar to block notifications when away from home
-	or middle of night
-use 72 as a target, if outside temp is greater than one degree closer to the target, alert
-configure a timeout for notifications
+# Open the Damn Windows
 
-darksky api gives 1000 free API calls a day, so every 5 minutes would be 288.  Every 5 or 10 minutes should be good.
+When it's nice outside, let's make it nicer inside.  Let's open the windows.
+
+This little app monitors the temperature inside and outside, and sends an SMS if the outside temp is pleasant and might put a smile on your face to open the windows.  It might also help you save a little money on HVAC energy usage.
+
+It also won't irritate you too much, as messages are limited to once a day, and also you can configure a whitelist window so it won't send out an SMS when you are normally away from the house.
