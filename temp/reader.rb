@@ -5,8 +5,7 @@ module Temp
     end
 
     def read
-      mock_read
-      # `python #{Config::ROOT_DIR}/read_raw_temp.py #{@address}`.to_f.round(Config::Temp::MEASUREMENT_PRECISION)
+      `python #{Config::ROOT_DIR}/read_raw_temp.py #{@address}`.to_f.round(Config::Temp::MEASUREMENT_PRECISION)
     end
 
     private
