@@ -2,15 +2,15 @@ require 'pry'
 require 'date'
 require_relative 'config'
 require_relative 'delivery'
-require_relative 'temp_reader'
+require_relative 'temp'
 
 
 target_temp = Config::Temp::TARGET
 min_temp = target_temp - (Config::Temp::RANGE / 2)
 max_temp = target_temp + (Config::Temp::RANGE / 2)
 
-inside_thermometer = TempReader.new(Config::Temp::Devices::INSIDE)
-outside_thermometer = TempReader.new(Config::Temp::Devices::OUTSIDE)
+inside_thermometer = Temp::Reader.new(Config::Temp::Devices::INSIDE)
+outside_thermometer = Temp::Reader.new(Config::Temp::Devices::OUTSIDE)
 outside_temp = outside_thermometer.read
 inside_temp = inside_thermometer.read
 
@@ -29,3 +29,6 @@ end
 # Outside temperature is infact more pleasant than inside.
 # Time to open the damn windows!
 Delivery::Scheduler.new(inside_temp, outside_temp).schedule
+
+# log data to file
+Temp::Storage.new.append_current_reading(inside_temp, outside_temp)

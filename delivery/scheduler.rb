@@ -2,7 +2,7 @@ require 'time'
 
 module Delivery
   class Scheduler
-    FILE_NAME = Config::Delivery::SENT_HISTORY_FILE
+    FILE_NAME = "#{Config::ROOT_DIR}/#{Config::Delivery::SENT_HISTORY_FILE}"
     SECONDS_IN_DAY = (24 * 60 * 60.0)
     DAYS = {
       0 => :sunday,
