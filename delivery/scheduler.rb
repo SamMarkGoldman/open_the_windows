@@ -3,7 +3,6 @@ require 'time'
 module Delivery
   class Scheduler
     FILE_NAME = "#{Config::ROOT_DIR}/#{Config::Delivery::SENT_HISTORY_FILE}"
-    SECONDS_IN_DAY = (24 * 60 * 60.0)
     DAYS = {
       0 => :sunday,
       1 => :monday,
@@ -20,16 +19,20 @@ module Delivery
     end
 
     def schedule
-      # puts(content) if !recent_message?
-      if !recent_message? && in_whitelist_time?
+      if !message_sent_today? && in_whitelist_time? && prediction_pleasant?
         Email.new.deliver(content)
         update
       end
     end
 
-    def recent_message?
+    def message_sent_today?
       return false unless File.file?(FILE_NAME)
-      Time.now - Time.parse(File.read(FILE_NAME)) < SECONDS_IN_DAY
+
+      now = Time.now
+      sent = Time.parse(File.read(FILE_NAME))
+      now.year === sent.year &&
+        now.month === sent.month &&
+        now.day === sent.day
     end
 
     def in_whitelist_time?
@@ -37,6 +40,11 @@ module Delivery
       day = DAYS[time.wday]
       whitelist_window = Config::Delivery::SCHEDULE_WHITELIST[day]
       time >= Time.parse(whitelist_window.first) && time <= Time.parse(whitelist_window.last)
+    end
+
+    def prediction_pleasant?
+      prediction = Temp::Analyzer.future_prediction
+      Temp::Analyzer.within_pleasant_range?(prediction)
     end
 
     def update

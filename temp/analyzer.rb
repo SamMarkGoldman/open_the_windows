@@ -14,13 +14,12 @@ module Temp
       (@@target_temp - outside_temp).abs < (@@target_temp - inside_temp).abs
     end
 
-    def self.future_prediction(minutes)
+    def self.future_prediction
       storage = Temp::Storage.new
       storage.load_current_file
-      data = storage.recent_data(minutes)
+      data = storage.recent_data(Config::Temp::Analyzer::PREDICTION_PERIOD_MIN)
 
       data.first[:outside] + (data.first[:outside] - data.last[:outside])
-
     end
   end
 end
