@@ -14,7 +14,7 @@ require "webrick"
 class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
     def do_GET (request, response)
         response.status = 200
-        response.content_type = "text/plain"
+        response.content_type = "text/html"
         result = nil
         
         case request.path
@@ -27,7 +27,18 @@ class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
                 outside_temp = outside_thermometer.read
                 inside_temp = inside_thermometer.read
 
-                result = "inside: #{inside_temp}\noutside: #{outside_temp}"
+                result = %{
+                    <html>
+                        <div style="text-align: center; font-size: 700%; position: relative; top: 50%; transform: translateY(-50%);">
+                            <div>
+                                inside: #{inside_temp}&deg;
+                            </div>
+                            <div>
+                                outside: #{outside_temp}&deg;
+                            </div>
+                        </div>
+                    </html>
+                }
         end
         
         response.body = result.to_s + "\n"
