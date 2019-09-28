@@ -32,7 +32,7 @@ module Temp
     end
 
     def last_reading
-      `tail -n 1 #{file_path}`.split(',')
+      `tail -n 1 #{file_path}`.split(',').map(&:strip)
     end
 
     private
