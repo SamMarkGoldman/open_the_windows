@@ -22,10 +22,13 @@ class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
                 count = request.query["count"]
                 result = "not yet implemented"
             else
-                inside_thermometer = Temp::Reader.new(Config::Temp::Devices::INSIDE)
-                outside_thermometer = Temp::Reader.new(Config::Temp::Devices::OUTSIDE)
-                outside_temp = outside_thermometer.read
-                inside_temp = inside_thermometer.read
+                last_reading = Temp::Storage.new.last_reading
+                # inside_thermometer = Temp::Reader.new(Config::Temp::Devices::INSIDE)
+                # outside_thermometer = Temp::Reader.new(Config::Temp::Devices::OUTSIDE)
+                # outside_temp = outside_thermometer.read
+                # inside_temp = inside_thermometer.read
+                inside_temp = last_reading[1]
+                outside_temp = last_reading[2]
 
                 result = %{
                     <html>

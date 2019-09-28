@@ -31,6 +31,10 @@ module Temp
       end
     end
 
+    def last_reading
+      `tail -n 1 #{file_path}`.split(',')
+    end
+
     private
 
     def decode_reading(reading)
