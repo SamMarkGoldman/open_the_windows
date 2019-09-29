@@ -34,7 +34,7 @@ class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
             when "/history"
                 response.content_type = "text/html"
                 minutes = request.query["minutes"].to_i
-                data = chart_data(minutes)
+                data = chart_data(minutes).reverse
 
                 times = prepare_time_labels(data)
                 inside_temps = data.map { |d| d[:inside] }
@@ -45,7 +45,7 @@ class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
                         <script src="js/test.js"></script>
                         <body>
                         <div style="width:75%;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="canvas" style="display: block; height: 264px; width: 528px;" width="1056" height="528" class="chartjs-render-monitor"></canvas>
+                            <canvas id="canvas" style="display: block; height: 330px; width: 660px;" width="1056" height="528" class="chartjs-render-monitor"></canvas>
                         </div>
                         
                         <script>
@@ -56,8 +56,8 @@ class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
                                     labels: #{times},
                                     datasets: [{
                                         label: 'Inside',
-                                        backgroundColor: window.chartColors.red,
-                                        borderColor: window.chartColors.red,
+                                        backgroundColor: window.chartColors.green,
+                                        borderColor: window.chartColors.green,
                                         data: #{inside_temps},
                                         fill: false,
                                     }, {

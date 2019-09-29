@@ -72,6 +72,7 @@ window.chartColors = {
                 }
             };
         // };
+    Chart.defaults.global.elements.point.radius = 0;
 
 	Samples.utils = {
 		// Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
