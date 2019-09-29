@@ -42,10 +42,10 @@ window.chartColors = {
 	// var Color = global.Color;
 	global.Config = {
                 responsive: true,
-                title: {
-                    display: true,
-                    text: 'Chart.js Line Chart'
-                },
+                // title: {
+                //     display: true,
+                //     text: 'Chart.js Line Chart'
+                // },
                 tooltips: {
                     mode: 'index',
                     intersect: false,
@@ -59,14 +59,14 @@ window.chartColors = {
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Month'
+                            labelString: 'Time'
                         }
                     }],
                     yAxes: [{
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Value'
+                            labelString: 'Temp'
                         }
                     }]
                 }
