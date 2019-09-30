@@ -11,41 +11,10 @@ window.chartColors = {
 };
 
 (function(global) {
-	// var MONTHS = [
-	// 	'January',
-	// 	'February',
-	// 	'March',
-	// 	'April',
-	// 	'May',
-	// 	'June',
-	// 	'July',
-	// 	'August',
-	// 	'September',
-	// 	'October',
-	// 	'November',
-	// 	'December'
-	// ];
-
-	// var COLORS = [
-	// 	'#4dc9f6',
-	// 	'#f67019',
-	// 	'#f53794',
-	// 	'#537bc4',
-	// 	'#acc236',
-	// 	'#166a8f',
-	// 	'#00a950',
-	// 	'#58595b',
-	// 	'#8549ba'
-	// ];
-
 	var Samples = global.Samples || (global.Samples = {});
-	// var Color = global.Color;
+
 	global.Config = {
                 responsive: true,
-                // title: {
-                //     display: true,
-                //     text: 'Chart.js Line Chart'
-                // },
                 tooltips: {
                     mode: 'index',
                     intersect: false,
@@ -71,7 +40,6 @@ window.chartColors = {
                     }]
                 }
             };
-        // };
     Chart.defaults.global.elements.point.radius = 0;
 
 	Samples.utils = {
@@ -160,11 +128,6 @@ window.chartColors = {
 	window.randomScalingFactor = function() {
 		return Math.round(Samples.utils.rand(-100, 100));
 	};
-
-	// INITIALIZATION
-
-	// Samples.utils.srand(Date.now());
-
 	
 
 }(this));

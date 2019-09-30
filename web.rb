@@ -8,15 +8,15 @@ require "webrick"
 =begin
     Example usage: 
         http://localhost:1234/ shows current temp readings
-        http://localhost:1234/history?minutes=10 fetches the last [minutes] readings from the history file
+        http://localhost:1234/history?days=5 fetches the last [days] readings from the history file
 =end
 
 
 class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
-    def chart_data(minutes)
+    def chart_data(days)
         storage = Temp::Storage.new
         storage.load_current_file
-        storage.recent_data(minutes)
+        storage.recent_data(days * 1440)
     end
 
     def prepare_time_labels(data)
@@ -28,63 +28,57 @@ class TemperatureServlet < WEBrick::HTTPServlet::AbstractServlet
         result = nil
         
         case request.path
-            when "/js/test.js"
+            when "/js/chart_utils.js"
                 response.content_type = "application/javascript"
-                result = File.read("js/test.js")
+                result = File.read("js/chart_utils.js")
             when "/history"
                 response.content_type = "text/html"
-                minutes = request.query["minutes"].to_i
-                data = chart_data(minutes).reverse
+                days = request.query["days"].to_i
+                data = chart_data(days).reverse
 
                 times = prepare_time_labels(data)
                 inside_temps = data.map { |d| d[:inside] }
                 outside_temps = data.map { |d| d[:outside] }
+
                 result = %{
                     <html>
                         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-                        <script src="js/test.js"></script>
+                        <script src="js/chart_utils.js"></script>
                         <body>
-                        <div style="width:75%;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="canvas" style="display: block; height: 330px; width: 660px;" width="1056" height="528" class="chartjs-render-monitor"></canvas>
-                        </div>
-                        
-                        <script>
-
-                            var config = {
-                                type: 'line',
-                                data: {
-                                    labels: #{times},
-                                    datasets: [{
-                                        label: 'Inside',
-                                        backgroundColor: window.chartColors.green,
-                                        borderColor: window.chartColors.green,
-                                        data: #{inside_temps},
-                                        fill: false,
-                                    }, {
-                                        label: 'Outside',
-                                        fill: false,
-                                        backgroundColor: window.chartColors.blue,
-                                        borderColor: window.chartColors.blue,
-                                        data: #{outside_temps},
-                                    }]
-                                },
-                                options: Config,
-                            };
-
-                            window.onload = function() {
-                                var ctx = document.getElementById('canvas').getContext('2d');
-                                window.myLine = new Chart(ctx, config);
-                            };
-
+                            <div style="width:100%;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                <canvas id="canvas" style="display: block;" width="100" height="40" class="chartjs-render-monitor"></canvas>
+                            </div>
                             
+                            <script>
+                                var config = {
+                                    type: 'line',
+                                    data: {
+                                        labels: #{times},
+                                        datasets: [{
+                                            label: 'Inside',
+                                            backgroundColor: window.chartColors.green,
+                                            borderColor: window.chartColors.green,
+                                            data: #{inside_temps},
+                                            fill: false,
+                                        }, {
+                                            label: 'Outside',
+                                            fill: false,
+                                            backgroundColor: window.chartColors.blue,
+                                            borderColor: window.chartColors.blue,
+                                            data: #{outside_temps},
+                                        }]
+                                    },
+                                    options: Config,
+                                };
 
-                            var colorNames = Object.keys(window.chartColors);
-                        </script>
+                                window.onload = function() {
+                                    var ctx = document.getElementById('canvas').getContext('2d');
+                                    window.myLine = new Chart(ctx, config);
+                                };
 
-
-
-                    </body>
-                        <!--<canvas id="canvas" style="display: block; height: 364px; width: 700px;" width="1556" height="528" class="chartjs-render-monitor"></canvas>-->
+                                var colorNames = Object.keys(window.chartColors);
+                            </script>
+                        </body>
                     </html>
                 }
             else
